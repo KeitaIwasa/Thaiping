@@ -27,11 +27,11 @@ export default function TypingSession({ mode }: { mode: Mode }) {
   }, [currentPhrase]);
 
   useEffect(() => {
-    if (currentPhrase) {
+    if (mode === 'practice' && currentPhrase) {
       const timer = setTimeout(playAudio, 100);
       return () => clearTimeout(timer);
     }
-  }, [currentPhrase, playAudio]);
+  }, [mode, currentPhrase, playAudio]);
 
   useEffect(() => {
     if (isCorrect) {
