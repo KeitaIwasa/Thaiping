@@ -141,10 +141,15 @@ export default function ManagePhrases() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Thai (Required)</label>
                 <input
                   type="text"
+                  name="thai-phrase-input"
                   value={editingPhrase.thai || ''}
                   onChange={e => setEditingPhrase({...editingPhrase, thai: e.target.value})}
                   className="w-full p-3 border rounded-xl font-thai"
                   placeholder="e.g. สวัสดี"
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
                 />
               </div>
               <div>

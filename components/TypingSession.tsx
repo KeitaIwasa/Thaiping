@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Phrase, loadPhrases, savePhrases } from '@/lib/store';
 import { ArrowLeft, CheckCircle2, Volume2 } from 'lucide-react';
@@ -70,6 +70,13 @@ export default function TypingSession({ mode }: { mode: Mode }) {
       return next;
     });
     setTimeout(() => inputRef.current?.focus(), 100);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isCorrect) {
+      handleNext();
+    }
   };
 
   const handleMemorized = () => {
@@ -154,11 +161,12 @@ export default function TypingSession({ mode }: { mode: Mode }) {
           )}
         </div>
 
-        <div className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="relative">
             <input
               ref={inputRef}
               type="text"
+              name="thai-typing-input"
               value={input}
               onChange={(e) => checkInput(e.target.value)}
               onKeyDown={(e) => {
@@ -180,10 +188,11 @@ export default function TypingSession({ mode }: { mode: Mode }) {
                 isCorrect ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 focus:border-blue-500'
               }`}
               autoFocus
-              autoComplete="off"
+              autoComplete="new-password"
               autoCorrect="off"
               autoCapitalize="off"
-              spellCheck="false"
+              spellCheck={false}
+              enterKeyHint="done"
             />
             {isCorrect && (
               <div className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500">
@@ -195,6 +204,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
           {isCorrect ? (
             <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-4">
               <button
+                type="button"
                 onClick={handleMemorized}
                 className="p-4 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
               >
@@ -203,6 +213,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
                 (Hide for 5 days)
               </button>
               <button
+                type="button"
                 onClick={handleNext}
                 className="p-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
               >
@@ -213,6 +224,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
             <div className="flex justify-end items-center px-2">
               {mode === 'memorization' && (
                 <button
+                  type="button"
                   onClick={() => {
                     setInput(currentPhrase.thai);
                     setIsCorrect(true);
@@ -224,7 +236,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
               )}
             </div>
           )}
-        </div>
+        </form>
       </main>
     </div>
   );
