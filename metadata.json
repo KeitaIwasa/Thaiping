@@ -1,5 +1,5 @@
 {
-  "name": "ThaiTyping",
-  "description": "タイ語のタイピング練習ができるモバイルWebアプリ。練習モードと暗記モードを搭載。",
+  "name": "Thaiping",
+  "description": "A mobile web app for Thai language typing practice. Equipped with practice and memorization modes.",
   "requestFramePermissions": []
 }

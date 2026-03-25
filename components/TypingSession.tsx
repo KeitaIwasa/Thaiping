@@ -105,7 +105,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
 
   if (phrases.length === 0 && !currentPhrase) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+      <div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center justify-center p-4">
         <h2 className="text-2xl font-bold mb-4">完了！</h2>
         <p className="text-gray-600 mb-8">学習可能なフレーズがありません。</p>
         <button onClick={() => router.push('/')} className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold">
@@ -118,18 +118,18 @@ export default function TypingSession({ mode }: { mode: Mode }) {
   if (!currentPhrase) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-[100dvh] bg-gray-50 flex flex-col">
       <header className="flex items-center p-4 bg-white shadow-sm">
         <button onClick={() => router.push('/')} className="p-2 mr-4">
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-xl font-bold">{mode === 'practice' ? '練習モード' : '暗記モード'}</h1>
+        <h1 className="text-xl font-bold">{mode === 'practice' ? 'Practice Mode' : 'Memorization Mode'}</h1>
         <div className="ml-auto text-sm text-gray-500">
           残り: {phrases.length}
         </div>
       </header>
 
-      <main className="flex-1 p-4 flex flex-col max-w-md w-full mx-auto">
+      <main className="flex-1 min-h-0 overflow-y-auto p-4 pb-[max(1rem,env(safe-area-inset-bottom))] flex flex-col max-w-md w-full mx-auto">
         <div className="bg-white rounded-2xl shadow-sm p-6 mb-6 flex-1 flex flex-col justify-center items-center text-center space-y-4 relative">
           <button 
             onClick={playAudio}
@@ -165,6 +165,11 @@ export default function TypingSession({ mode }: { mode: Mode }) {
               type="text"
               value={input}
               onChange={(e) => checkInput(e.target.value)}
+              onFocus={(e) => {
+                requestAnimationFrame(() => {
+                  e.currentTarget.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                });
+              }}
               placeholder="タイ語を入力..."
               className={`w-full p-4 text-2xl font-thai text-center border-2 rounded-xl focus:outline-none transition-colors ${
                 isCorrect ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 focus:border-blue-500'

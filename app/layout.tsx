@@ -1,4 +1,4 @@
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 import { Noto_Sans_Thai, Noto_Sans_JP } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css'; // Global styles
@@ -14,6 +14,13 @@ const notoSansThai = Noto_Sans_Thai({ subsets: ['thai'], variable: '--font-noto-
 export const metadata: Metadata = {
   title: 'Thaiping',
   description: 'Practice typing Thai phrases',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  interactiveWidget: 'resizes-content',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
