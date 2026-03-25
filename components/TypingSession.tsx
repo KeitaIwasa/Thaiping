@@ -138,11 +138,8 @@ export default function TypingSession({ mode }: { mode: Mode }) {
             <Volume2 className="w-6 h-6" />
           </button>
           
-          <div className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-            {currentPhrase.english}
-          </div>
-          <div className="text-xl font-bold text-gray-800">
-            {currentPhrase.japanese}
+          <div className="text-xl font-bold text-gray-900">
+            {currentPhrase.english} / {currentPhrase.japanese}
           </div>
           
           {mode === 'practice' && (
@@ -164,6 +161,12 @@ export default function TypingSession({ mode }: { mode: Mode }) {
               type="text"
               value={input}
               onChange={(e) => checkInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && isCorrect && !e.nativeEvent.isComposing) {
+                  e.preventDefault();
+                  handleNext();
+                }
+              }}
               onFocus={(e) => {
                 const target = e.currentTarget;
                 requestAnimationFrame(() => {
