@@ -3,8 +3,12 @@
 import { GoogleGenAI, Type } from '@google/genai';
 
 export const generatePhraseDetails = async (thai: string, japanese?: string, english?: string) => {
-  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-  if (!apiKey) throw new Error('Gemini API key is missing');
+  const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error(
+      'Gemini API key is missing. Set GEMINI_API_KEY (preferred) or NEXT_PUBLIC_GEMINI_API_KEY.'
+    );
+  }
 
   const ai = new GoogleGenAI({ apiKey });
 

@@ -62,7 +62,8 @@ export default function ManagePhrases() {
       setEditingPhrase({});
     } catch (error) {
       console.error(error);
-      alert('Failed to generate phrase details. Please check your API key settings.');
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      alert(`Failed to generate phrase details. ${message}`);
     } finally {
       setIsLoading(false);
     }
