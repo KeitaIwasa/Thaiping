@@ -63,6 +63,12 @@ const DEFAULT_PHRASES: Phrase[] = [
   { id: '50', thai: 'ดื่ม', romanization: 'dʉ̀ʉm', japanese: '飲む', english: 'Drink', memorizedUntil: { practice: null, memorization: null } }
 ];
 
+const clonePhrases = (phrases: Phrase[]): Phrase[] =>
+  phrases.map((phrase) => ({
+    ...phrase,
+    memorizedUntil: { ...phrase.memorizedUntil },
+  }));
+
 export const loadPhrases = (): Phrase[] => {
   if (typeof window === 'undefined') return [];
   const stored = localStorage.getItem('thai_phrases');
@@ -77,11 +83,19 @@ export const loadPhrases = (): Phrase[] => {
     }
   }
   // Initialize with default phrases if empty
-  savePhrases(DEFAULT_PHRASES);
-  return DEFAULT_PHRASES;
+  const defaults = clonePhrases(DEFAULT_PHRASES);
+  savePhrases(defaults);
+  return defaults;
 };
 
 export const savePhrases = (phrases: Phrase[]) => {
   if (typeof window === 'undefined') return;
   localStorage.setItem('thai_phrases', JSON.stringify(phrases));
+};
+
+export const resetPhrasesToDefault = (): Phrase[] => {
+  if (typeof window === 'undefined') return [];
+  const defaults = clonePhrases(DEFAULT_PHRASES);
+  savePhrases(defaults);
+  return defaults;
 };

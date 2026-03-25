@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Phrase, loadPhrases, savePhrases } from '@/lib/store';
+import { Phrase, loadPhrases, savePhrases, resetPhrasesToDefault } from '@/lib/store';
 import { generatePhraseDetails } from '@/lib/gemini';
-import { ArrowLeft, Plus, Edit2, Trash2, Loader2 } from 'lucide-react';
+import { ArrowLeft, Plus, Edit2, Trash2, Loader2, RotateCcw } from 'lucide-react';
 
 export default function ManagePhrases() {
   const router = useRouter();
@@ -76,6 +76,16 @@ export default function ManagePhrases() {
     }
   };
 
+  const handleResetToDefault = () => {
+    if (confirm('Reset all phrases to the default set? This will remove your custom changes.')) {
+      const defaults = resetPhrasesToDefault();
+      setPhrases(defaults);
+      setIsEditing(false);
+      setEditingPhrase({});
+      alert('Phrases were reset to defaults.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <header className="flex items-center p-4 bg-white shadow-sm sticky top-0 z-10">
@@ -84,8 +94,18 @@ export default function ManagePhrases() {
         </button>
         <h1 className="text-xl font-bold">Phrase Manager</h1>
         <button
+          type="button"
+          onClick={handleResetToDefault}
+          className="ml-auto mr-2 px-3 py-2 border border-gray-200 text-gray-600 rounded-full hover:bg-gray-100 flex items-center gap-2 text-sm font-medium"
+          title="Reset to defaults"
+        >
+          <RotateCcw className="w-5 h-5" />
+          <span>Reset</span>
+        </button>
+        <button
+          type="button"
           onClick={() => { setEditingPhrase({}); setIsEditing(true); }}
-          className="ml-auto p-2 bg-blue-600 text-white rounded-full shadow-sm"
+          className="p-2 bg-blue-600 text-white rounded-full shadow-sm"
         >
           <Plus className="w-5 h-5" />
         </button>
