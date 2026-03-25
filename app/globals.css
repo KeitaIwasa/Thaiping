@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Google+Sans+Thai:wght@400;500;600;700&family=Kaisei+Decol&family=RocknRoll+One&family=Russo+One&display=swap');
+
+@theme {
+  --font-sans: var(--font-google-sans), var(--font-jp), ui-sans-serif, system-ui, sans-serif;
+  --font-thai: var(--font-google-sans), "Google Sans Thai", var(--font-noto-thai), var(--font-jp), sans-serif;
+}
