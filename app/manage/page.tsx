@@ -19,7 +19,7 @@ export default function ManagePhrases() {
 
   const handleSave = async () => {
     if (!editingPhrase.thai) {
-      alert('タイ語は必須です');
+      alert('Thai is required.');
       return;
     }
 
@@ -62,14 +62,14 @@ export default function ManagePhrases() {
       setEditingPhrase({});
     } catch (error) {
       console.error(error);
-      alert('生成に失敗しました。APIキーが設定されているか確認してください。');
+      alert('Failed to generate phrase details. Please check your API key settings.');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('本当に削除しますか？')) {
+    if (confirm('Are you sure you want to delete this phrase?')) {
       const newPhrases = phrases.filter(p => p.id !== id);
       setPhrases(newPhrases);
       savePhrases(newPhrases);
@@ -82,7 +82,7 @@ export default function ManagePhrases() {
         <button onClick={() => router.push('/')} className="p-2 mr-4">
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-xl font-bold">フレーズ管理</h1>
+        <h1 className="text-xl font-bold">Phrase Manager</h1>
         <button
           onClick={() => { setEditingPhrase({}); setIsEditing(true); }}
           className="ml-auto p-2 bg-blue-600 text-white rounded-full shadow-sm"
@@ -113,47 +113,47 @@ export default function ManagePhrases() {
       {isEditing && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl w-full max-w-md p-6 space-y-4 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold">{editingPhrase.id ? 'フレーズを編集' : 'フレーズを追加'}</h2>
+            <h2 className="text-xl font-bold">{editingPhrase.id ? 'Edit Phrase' : 'Add Phrase'}</h2>
             
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">タイ語 (必須)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Thai (Required)</label>
                 <input
                   type="text"
                   value={editingPhrase.thai || ''}
                   onChange={e => setEditingPhrase({...editingPhrase, thai: e.target.value})}
                   className="w-full p-3 border rounded-xl font-thai"
-                  placeholder="例: สวัสดี"
+                  placeholder="e.g. สวัสดี"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">日本語 (任意)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Japanese (Optional)</label>
                 <input
                   type="text"
                   value={editingPhrase.japanese || ''}
                   onChange={e => setEditingPhrase({...editingPhrase, japanese: e.target.value})}
                   className="w-full p-3 border rounded-xl"
-                  placeholder="例: こんにちは"
+                  placeholder="e.g. こんにちは"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">英語 (任意)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">English (Optional)</label>
                 <input
                   type="text"
                   value={editingPhrase.english || ''}
                   onChange={e => setEditingPhrase({...editingPhrase, english: e.target.value})}
                   className="w-full p-3 border rounded-xl"
-                  placeholder="例: Hello"
+                  placeholder="e.g. Hello"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">ローマ字 (任意)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Romanization (Optional)</label>
                 <input
                   type="text"
                   value={editingPhrase.romanization || ''}
                   onChange={e => setEditingPhrase({...editingPhrase, romanization: e.target.value})}
                   className="w-full p-3 border rounded-xl"
-                  placeholder="空欄の場合は自動生成されます"
+                  placeholder="Auto-generated if left blank"
                 />
               </div>
             </div>
@@ -164,18 +164,18 @@ export default function ManagePhrases() {
                 className="flex-1 p-3 border rounded-xl font-medium"
                 disabled={isLoading}
               >
-                キャンセル
+                Cancel
               </button>
               <button
                 onClick={handleSave}
                 className="flex-1 p-3 bg-blue-600 text-white rounded-xl font-medium flex justify-center items-center"
                 disabled={isLoading}
               >
-                {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : '保存'}
+                {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save'}
               </button>
             </div>
             <p className="text-xs text-gray-500 text-center mt-2">
-              ※空欄の項目はAIが自動生成します
+              Empty fields are automatically generated by AI.
             </p>
           </div>
         </div>

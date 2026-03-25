@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="ja">
+    <html lang="en">
       <body className={`${googleSans.variable} ${notoSansJP.variable} ${notoSansThai.variable} font-sans`} suppressHydrationWarning>{children}</body>
     </html>
   );

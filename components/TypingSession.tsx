@@ -53,7 +53,6 @@ export default function TypingSession({ mode }: { mode: Mode }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPhrases(shuffled);
     if (shuffled.length > 0) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCurrentPhrase(shuffled[0]);
     }
   }, [mode]);
@@ -106,10 +105,10 @@ export default function TypingSession({ mode }: { mode: Mode }) {
   if (phrases.length === 0 && !currentPhrase) {
     return (
       <div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center justify-center p-4">
-        <h2 className="text-2xl font-bold mb-4">完了！</h2>
-        <p className="text-gray-600 mb-8">学習可能なフレーズがありません。</p>
+        <h2 className="text-2xl font-bold mb-4">Done!</h2>
+        <p className="text-gray-600 mb-8">No phrases are currently available for study.</p>
         <button onClick={() => router.push('/')} className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold">
-          ホームに戻る
+          Back to Home
         </button>
       </div>
     );
@@ -125,7 +124,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
         </button>
         <h1 className="text-xl font-bold">{mode === 'practice' ? 'Practice Mode' : 'Memorization Mode'}</h1>
         <div className="ml-auto text-sm text-gray-500">
-          残り: {phrases.length}
+          Remaining: {phrases.length}
         </div>
       </header>
 
@@ -134,7 +133,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
           <button 
             onClick={playAudio}
             className="absolute top-4 right-4 p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-            title="音声を再生"
+            title="Play audio"
           >
             <Volume2 className="w-6 h-6" />
           </button>
@@ -170,7 +169,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
                   e.currentTarget.scrollIntoView({ block: 'center', behavior: 'smooth' });
                 });
               }}
-              placeholder="タイ語を入力..."
+              placeholder="Type Thai..."
               className={`w-full p-4 text-2xl font-thai text-center border-2 rounded-xl focus:outline-none transition-colors ${
                 isCorrect ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 focus:border-blue-500'
               }`}
@@ -193,13 +192,13 @@ export default function TypingSession({ mode }: { mode: Mode }) {
                 onClick={handleNext}
                 className="p-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
               >
-                次へ
+                Next
               </button>
               <button
                 onClick={handleMemorized}
                 className="p-4 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
               >
-                覚えた (5日間非表示)
+                Memorized (Hide for 5 days)
               </button>
             </div>
           ) : (
@@ -209,7 +208,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
                 className="flex items-center text-gray-500 hover:text-gray-700 p-2"
               >
                 <SkipForward className="w-5 h-5 mr-1" />
-                スキップ
+                Skip
               </button>
               
               {mode === 'memorization' && (
@@ -220,7 +219,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
                   }}
                   className="text-blue-600 text-sm font-medium p-2"
                 >
-                  答えを見る
+                  Show answer
                 </button>
               )}
             </div>
