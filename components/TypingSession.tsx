@@ -192,16 +192,18 @@ export default function TypingSession({ mode }: { mode: Mode }) {
           {isCorrect ? (
             <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-4">
               <button
+                onClick={handleMemorized}
+                className="p-4 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
+              >
+                Memorized
+                <br />
+                (Hide for 5 days)
+              </button>
+              <button
                 onClick={handleNext}
                 className="p-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
               >
                 Next
-              </button>
-              <button
-                onClick={handleMemorized}
-                className="p-4 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
-              >
-                Memorized (Hide for 5 days)
               </button>
             </div>
           ) : (
