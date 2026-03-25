@@ -165,8 +165,11 @@ export default function TypingSession({ mode }: { mode: Mode }) {
               value={input}
               onChange={(e) => checkInput(e.target.value)}
               onFocus={(e) => {
+                const target = e.currentTarget;
                 requestAnimationFrame(() => {
-                  e.currentTarget.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                  if (target && target.isConnected) {
+                    target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                  }
                 });
               }}
               placeholder="Type Thai..."
