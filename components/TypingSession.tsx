@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Phrase, loadPhrases, savePhrases } from '@/lib/store';
-import { ArrowLeft, CheckCircle2, SkipForward, Volume2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Volume2 } from 'lucide-react';
 
 type Mode = 'practice' | 'memorization';
 
@@ -210,15 +210,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
               </button>
             </div>
           ) : (
-            <div className="flex justify-between items-center px-2">
-              <button
-                onClick={handleNext}
-                className="flex items-center text-gray-500 hover:text-gray-700 p-2"
-              >
-                <SkipForward className="w-5 h-5 mr-1" />
-                Skip
-              </button>
-              
+            <div className="flex justify-end items-center px-2">
               {mode === 'memorization' && (
                 <button
                   onClick={() => {
