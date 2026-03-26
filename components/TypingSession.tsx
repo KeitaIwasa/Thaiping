@@ -13,6 +13,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
   const [currentPhrase, setCurrentPhrase] = useState<Phrase | null>(null);
   const [input, setInput] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [revealStep, setRevealStep] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const playAudio = useCallback(() => {
@@ -60,6 +61,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
   const handleNext = () => {
     setInput('');
     setIsCorrect(null);
+    setRevealStep(0);
     setPhrases(prev => {
       const next = prev.slice(1);
       if (next.length > 0) {
@@ -136,9 +138,21 @@ export default function TypingSession({ mode }: { mode: Mode }) {
       </header>
 
       <main className="flex-1 min-h-0 overflow-y-auto p-4 pb-[max(1rem,env(safe-area-inset-bottom))] flex flex-col max-w-md w-full mx-auto">
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6 flex-1 flex flex-col justify-center items-center text-center space-y-4 relative">
+        <div
+          onClick={() => {
+            if (mode === 'memorization') {
+              setRevealStep(prev => Math.min(prev + 1, 2));
+            }
+          }}
+          className={`bg-white rounded-2xl shadow-sm p-6 mb-6 flex-1 flex flex-col justify-center items-center text-center space-y-4 relative ${
+            mode === 'memorization' ? 'cursor-pointer' : ''
+          }`}
+        >
           <button 
-            onClick={playAudio}
+            onClick={(e) => {
+              e.stopPropagation();
+              playAudio();
+            }}
             className="absolute top-4 right-4 p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
             title="Play audio"
           >
@@ -157,6 +171,19 @@ export default function TypingSession({ mode }: { mode: Mode }) {
               <div className="text-lg text-gray-500 font-mono">
                 {currentPhrase.romanization}
               </div>
+            </div>
+          )}
+
+          {mode === 'memorization' && revealStep >= 1 && (
+            <div className="mt-6 space-y-2">
+              <div className="text-lg text-gray-500 font-mono">
+                {currentPhrase.romanization}
+              </div>
+              {revealStep >= 2 && (
+                <div className="text-4xl font-thai text-gray-900">
+                  {currentPhrase.thai}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -220,22 +247,7 @@ export default function TypingSession({ mode }: { mode: Mode }) {
                 Next
               </button>
             </div>
-          ) : (
-            <div className="flex justify-end items-center px-2">
-              {mode === 'memorization' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setInput(currentPhrase.thai);
-                    setIsCorrect(true);
-                  }}
-                  className="text-blue-600 text-sm font-medium p-2"
-                >
-                  Show answer
-                </button>
-              )}
-            </div>
-          )}
+          ) : null}
         </form>
       </main>
     </div>
