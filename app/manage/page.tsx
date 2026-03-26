@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Phrase, loadPhrases, savePhrases, resetPhrasesToDefault } from '@/lib/store';
 import { generatePhraseDetails } from '@/lib/gemini';
-import { ArrowLeft, Plus, Edit2, Trash2, Loader2, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Plus, Edit2, Trash2, Loader2, RotateCcw, Search } from 'lucide-react';
 
 export default function ManagePhrases() {
   const router = useRouter();
   const [phrases, setPhrases] = useState<Phrase[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editingPhrase, setEditingPhrase] = useState<Partial<Phrase>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +88,15 @@ export default function ManagePhrases() {
     }
   };
 
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredPhrases = normalizedQuery
+    ? phrases.filter((phrase) =>
+        [phrase.thai, phrase.romanization, phrase.japanese, phrase.english].some((field) =>
+          field.toLowerCase().includes(normalizedQuery)
+        )
+      )
+    : phrases;
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <header className="flex items-center p-4 bg-white shadow-sm sticky top-0 z-10">
@@ -113,22 +123,43 @@ export default function ManagePhrases() {
       </header>
 
       <main className="flex-1 p-4 max-w-2xl w-full mx-auto space-y-4">
-        {phrases.map(phrase => (
-          <div key={phrase.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
-            <div className="flex-1 min-w-0 pr-4">
-              <div className="text-lg font-thai font-bold truncate">{phrase.thai}</div>
-              <div className="text-sm text-gray-500 truncate">{phrase.japanese} / {phrase.english}</div>
-            </div>
-            <div className="flex space-x-2 flex-shrink-0">
-              <button onClick={() => { setEditingPhrase(phrase); setIsEditing(true); }} className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
-                <Edit2 className="w-5 h-5" />
-              </button>
-              <button onClick={() => handleDelete(phrase.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg">
-                <Trash2 className="w-5 h-5" />
-              </button>
-            </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3">
+          <div className="relative">
+            <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search Thai / Romanization / Japanese / English..."
+            className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            autoComplete="off"
+            spellCheck={false}
+          />
           </div>
-        ))}
+        </div>
+
+        {filteredPhrases.length > 0 ? (
+          filteredPhrases.map((phrase) => (
+            <div key={phrase.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+              <div className="flex-1 min-w-0 pr-4">
+                <div className="text-lg font-thai font-bold truncate">{phrase.thai}</div>
+                <div className="text-sm text-gray-500 truncate">{phrase.japanese} / {phrase.english}</div>
+              </div>
+              <div className="flex space-x-2 flex-shrink-0">
+                <button onClick={() => { setEditingPhrase(phrase); setIsEditing(true); }} className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
+                  <Edit2 className="w-5 h-5" />
+                </button>
+                <button onClick={() => handleDelete(phrase.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg">
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center text-gray-500">
+            該当するフレーズがありません。
+          </div>
+        )}
       </main>
 
       {isEditing && (
