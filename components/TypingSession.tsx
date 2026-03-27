@@ -151,7 +151,12 @@ export default function TypingSession({ mode }: { mode: Mode }) {
           }}
           onClick={() => {
             if (mode === 'memorization') {
-              setRevealStep(prev => Math.min(prev + 1, 2));
+              setRevealStep(prev => {
+                if (prev < 2) {
+                  return prev + 1;
+                }
+                return 1;
+              });
               restoreInputFocus();
             }
           }}
