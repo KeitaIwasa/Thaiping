@@ -15,6 +15,11 @@ export default function TypingSession({ mode }: { mode: Mode }) {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [revealStep, setRevealStep] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const restoreInputFocus = useCallback(() => {
+    requestAnimationFrame(() => {
+      inputRef.current?.focus({ preventScroll: true });
+    });
+  }, []);
 
   const playAudio = useCallback(() => {
     if (!currentPhrase) return;
@@ -139,9 +144,15 @@ export default function TypingSession({ mode }: { mode: Mode }) {
 
       <main className="flex-1 min-h-0 overflow-y-auto p-4 pb-[max(1rem,env(safe-area-inset-bottom))] flex flex-col max-w-md w-full mx-auto">
         <div
+          onPointerDown={(e) => {
+            if (mode === 'memorization') {
+              e.preventDefault();
+            }
+          }}
           onClick={() => {
             if (mode === 'memorization') {
               setRevealStep(prev => Math.min(prev + 1, 2));
+              restoreInputFocus();
             }
           }}
           className={`bg-white rounded-2xl shadow-sm p-6 mb-6 flex-1 flex flex-col justify-center items-center text-center space-y-4 relative ${
@@ -149,9 +160,13 @@ export default function TypingSession({ mode }: { mode: Mode }) {
           }`}
         >
           <button 
+            onPointerDown={(e) => {
+              e.preventDefault();
+            }}
             onClick={(e) => {
               e.stopPropagation();
               playAudio();
+              restoreInputFocus();
             }}
             className="absolute top-4 right-4 p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
             title="Play audio"
